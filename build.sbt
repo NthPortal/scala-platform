@@ -4,18 +4,19 @@ val scala3   = "3.2.2"
 
 ThisBuild / scalaVersion       := scala213
 ThisBuild / crossScalaVersions := Seq(scala212, scala213, scala3)
+ThisBuild / tlBaseVersion      := "0.2"
 
 // publishing info
 inThisBuild(
   Seq(
     organization  := "lgbt.princess",
-    versionScheme := Some("semver-spec"),
+    versionScheme := Some("early-semver"),
     homepage      := Some(url("https://github.com/NthPortal/scala-platform")),
     licenses      := Seq(License.Apache2),
     developers := List(
       Developer(
         "NthPortal",
-        "April Hyacinth",
+        "Marissa",
         "dev@princess.lgbt",
         url("https://github.com/NthPortal"),
       ),
@@ -37,11 +38,7 @@ inThisBuild(
     githubWorkflowPublishTargetBranches ++= Seq(
       RefPredicate.StartsWith(Ref.Tag("v")),
     ),
-    githubWorkflowJavaVersions := Seq(
-      JavaSpec.temurin("8"),
-      JavaSpec.temurin("11"),
-      JavaSpec.temurin("17"),
-    ),
+    githubWorkflowJavaVersions := Seq(JavaSpec.temurin("8")),
     githubWorkflowBuildPostamble ++= Seq(
       WorkflowStep.Sbt(
         name = Some("scalafmt"),
@@ -49,18 +46,6 @@ inThisBuild(
       ),
     ),
     githubWorkflowBuildMatrixFailFast := Some(false),
-    githubWorkflowPublishPreamble += WorkflowStep.Use(UseRef.Public("olafurpg", "setup-gpg", "v3")),
-    githubWorkflowPublish := Seq(
-      WorkflowStep.Sbt(
-        List("ci-release"),
-        env = Map(
-          "PGP_PASSPHRASE"    -> "${{ secrets.PGP_PASSPHRASE }}",
-          "PGP_SECRET"        -> "${{ secrets.PGP_SECRET }}",
-          "SONATYPE_PASSWORD" -> "${{ secrets.SONATYPE_PASSWORD }}",
-          "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}",
-        ),
-      ),
-    ),
   ),
 )
 
@@ -82,4 +67,6 @@ lazy val platform =
       libraryDependencies ++= Seq(
         "org.scalameta" %%% "munit" % "1.0.0-M7" % Test,
       ),
+      mimaPreviousArtifacts := Set().map("lgbt.princess" %%% "platform" % _),
+      mimaFailOnNoPrevious  := false,
     )
