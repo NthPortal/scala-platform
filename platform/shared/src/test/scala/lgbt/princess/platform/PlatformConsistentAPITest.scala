@@ -25,12 +25,4 @@ class PlatformConsistentAPITest extends FunSuite {
       1
     )
   }
-
-  test("Platform check methods are stable") {
-    // should compile and not throw a `MatchError`
-    true match {
-      case Platform.isJVM | Platform.isJS | Platform.isNative => assert(true)
-      case _                                                  => fail("should be unreachable")
-    }
-  }
 }

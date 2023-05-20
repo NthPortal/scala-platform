@@ -11,13 +11,13 @@ inThisBuild(
     organization  := "lgbt.princess",
     versionScheme := Some("semver-spec"),
     homepage      := Some(url("https://github.com/NthPortal/scala-platform")),
-    licenses      := Seq("The Apache License, Version 2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.txt")),
+    licenses      := Seq(License.Apache2),
     developers := List(
       Developer(
         "NthPortal",
         "April Hyacinth",
         "dev@princess.lgbt",
-        url("https://nthportal.com"),
+        url("https://github.com/NthPortal"),
       ),
     ),
     scmInfo := Some(
@@ -30,12 +30,55 @@ inThisBuild(
   ),
 )
 
+// CI config
+inThisBuild(
+  Seq(
+    githubWorkflowTargetTags ++= Seq("v*"),
+    githubWorkflowPublishTargetBranches ++= Seq(
+      RefPredicate.StartsWith(Ref.Tag("v")),
+    ),
+    githubWorkflowJavaVersions := Seq(
+      JavaSpec.temurin("8"),
+      JavaSpec.temurin("11"),
+      JavaSpec.temurin("17"),
+    ),
+    githubWorkflowBuildPostamble ++= Seq(
+      WorkflowStep.Sbt(
+        name = Some("scalafmt"),
+        commands = List("scalafmtCheckAll", "scalafmtSbtCheck"),
+      ),
+    ),
+    githubWorkflowBuildMatrixFailFast := Some(false),
+    githubWorkflowPublishPreamble += WorkflowStep.Use(UseRef.Public("olafurpg", "setup-gpg", "v3")),
+    githubWorkflowPublish := Seq(
+      WorkflowStep.Sbt(
+        List("ci-release"),
+        env = Map(
+          "PGP_PASSPHRASE"    -> "${{ secrets.PGP_PASSPHRASE }}",
+          "PGP_SECRET"        -> "${{ secrets.PGP_SECRET }}",
+          "SONATYPE_PASSWORD" -> "${{ secrets.SONATYPE_PASSWORD }}",
+          "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}",
+        ),
+      ),
+    ),
+  ),
+)
+
 lazy val platform =
   crossProject(JVMPlatform, JSPlatform, NativePlatform)
     .in(file("platform"))
     .settings(
       name := "platform",
-      scalacOptions ++= Seq("-Xlint:_"),
+      scalacOptions ++= Seq(
+        "-feature",
+        "-Werror",
+      ),
+      scalacOptions ++= {
+        CrossVersion.partialVersion(scalaVersion.value) match {
+          case Some((2, _)) => Seq("-Xlint:_")
+          case _            => Nil
+        }
+      },
       libraryDependencies ++= Seq(
         "org.scalameta" %%% "munit" % "1.0.0-M7" % Test,
       ),
