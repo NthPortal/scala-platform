@@ -18,8 +18,15 @@ package lgbt.princess.platform
 
 import scala.annotation.unchecked.uncheckedStable
 
+/** A utility for checking what platform Scala is running on. */
 object Platform {
-  @uncheckedStable def isJVM: Boolean    = true
-  @uncheckedStable def isJS: Boolean     = false
+
+  /** @return whether or not Scala is running on the JVM */
+  @uncheckedStable def isJVM: Boolean = true
+
+  /** @return whether or not Scala is running on JavaScript */
+  @uncheckedStable def isJS: Boolean = false
+
+  /** @return whether or not Scala is running natively */
   @uncheckedStable def isNative: Boolean = false
 }
