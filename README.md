@@ -6,7 +6,7 @@ A tiny library for determining what platform you are running on at runtime.
 To use this library, add the following dependency to your `build.sbt`:
 
 ```scala
-"lgbt.princess" %%% "platform" % "1.0.0"
+"lgbt.princess" %%% "platform" % "1.0.1"
 ```
 
 --------

@@ -67,6 +67,6 @@ lazy val platform =
       libraryDependencies ++= Seq(
         "org.scalameta" %%% "munit" % "1.0.0-M7" % Test,
       ),
-      mimaPreviousArtifacts := Set("0.2.0", "1.0.0").map(organization.value %%% name.value % _),
+      mimaPreviousArtifacts := Set("0.2.0", "1.0.0", "1.0.1").map(organization.value %%% name.value % _),
       mimaFailOnNoPrevious  := true,
     )
