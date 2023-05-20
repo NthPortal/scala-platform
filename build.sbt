@@ -4,7 +4,7 @@ val scala3   = "3.2.2"
 
 ThisBuild / scalaVersion       := scala213
 ThisBuild / crossScalaVersions := Seq(scala212, scala213, scala3)
-ThisBuild / tlBaseVersion      := "0.2"
+ThisBuild / tlBaseVersion      := "1.0"
 
 // publishing info
 inThisBuild(
@@ -67,6 +67,6 @@ lazy val platform =
       libraryDependencies ++= Seq(
         "org.scalameta" %%% "munit" % "1.0.0-M7" % Test,
       ),
-      mimaPreviousArtifacts := Set().map("lgbt.princess" %%% "platform" % _),
-      mimaFailOnNoPrevious  := false,
+      mimaPreviousArtifacts := Set("0.2.0").map(organization.value %%% name.value % _),
+      mimaFailOnNoPrevious  := true,
     )
