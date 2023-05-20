@@ -28,6 +28,7 @@ inThisBuild(
         "scm:git:git@github.com:NthPortal/scala-platform.git",
       ),
     ),
+    tlSonatypeUseLegacyHost := false,
   ),
 )
 
