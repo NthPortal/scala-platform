@@ -18,9 +18,9 @@ following interface:
 package lgbt.princess.platform
 
 object Platform {
-  def isJVM: Boolean    = ???
-  def isJS: Boolean     = ???
-  def isNative: Boolean = ???
+  final val isJVM    = ???
+  final val isJS     = ???
+  final val isNative = ???
 }
 ```
 
