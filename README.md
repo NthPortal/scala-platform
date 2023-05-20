@@ -24,4 +24,4 @@ object Platform {
 }
 ```
 
-with the methods returning the appropriate value on each platform.
+with the constants having the appropriate value on each platform.

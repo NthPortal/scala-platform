@@ -19,12 +19,12 @@ package lgbt.princess.platform
 /** A utility for checking what platform Scala is running on. */
 object Platform {
 
-  /** @return whether or not Scala is running on the JVM */
+  /** Whether or not Scala is running on the JVM */
   final val isJVM = false
 
-  /** @return whether or not Scala is running on JavaScript */
+  /** Whether or not Scala is running on JavaScript */
   final val isJS = true
 
-  /** @return whether or not Scala is running natively */
+  /** Whether or not Scala is running natively */
   final val isNative = false
 }
